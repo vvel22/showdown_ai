@@ -65,7 +65,24 @@ class OpponentPokemon:
         self.status = None
         self.current_hp = 100
         self.revealed = False
+        self.types = []
+        self.base_stats = {}
+        self.max_stats = {}
 
+    def calculate_max_stats(self):
+        max_stats = {}
+        for stat_name, base in self.base_stats.items():
+            iv = 31
+            ev = 252
+            level = 100
+            if stat_name == "hp":
+                val = ((2 * base + iv + (ev // 4)) * level) // 100 + level + 10
+            else:
+                val = (((2 * base + iv + (ev // 4)) * level) // 100 + 5)
+                val = int(val * 1.1)
+            max_stats[stat_name] = val
+        return max_stats
+    
 class BattleState:
     def __init__(self, your_team):
         self.your_team = your_team
