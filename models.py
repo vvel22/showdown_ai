@@ -68,6 +68,7 @@ class OpponentPokemon:
         self.types = []
         self.base_stats = {}
         self.max_stats = {}
+        self.likely_moves = []
 
     def calculate_max_stats(self):
         max_stats = {}

@@ -1,11 +1,13 @@
-from parser import load_team_from_url, parse_showdown_team, get_base_stats
+from parser import load_team_from_url, parse_showdown_team, get_base_stats, get_top_moves_pikalytics
 from models import Pokemon, BattleState, OpponentPokemon
+import requests
 
 pokepaste_url = "https://pokepast.es/45e2ed168db6ed11"
 
 try:
     team_txt = load_team_from_url(pokepaste_url)
     parsed_team = parse_showdown_team(team_txt)
+    parsed_team = parsed_team[:6]
 
     your_team = []
     for mon in parsed_team:
@@ -43,6 +45,7 @@ except Exception as e:
 battle = BattleState(your_team)
 enemy_input = input("Enter enemy Pokémon (comma-separated): ")
 enemy_names = [name.strip() for name in enemy_input.split(",") if name.strip()]
+enemy_names = enemy_names[:6]
 battle.opponent_team = [OpponentPokemon(name) for name in enemy_names]
 
 if battle.opponent_team:
@@ -77,3 +80,5 @@ for mon in battle.opponent_team:
         abbr = stat_abbr.get(stat, stat[:2].upper())
         print(f"    {abbr:<2}  Base: {base_val:<4} Max: {max_val}")
     print()
+
+print("Top moves for Garchomp:", get_top_moves_pikalytics("incineroar"))
